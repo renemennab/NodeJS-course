@@ -7,7 +7,16 @@ const http = require('http')
 
 // The server should respond to all requests with a string
 const server = http.createServer((req, res)=> {
+
+    // Get the path from the url
+    const trimmedPath = req.url.replace(/^\/+|\/+$/g, '')
+
+    // Send the response
     res.end('Hello World\n')
+
+    // Log the request path
+    console.log('Reques received on path: '+trimmedPath)
+
 })
 
 //Start the server, and have it listen on port 3000
