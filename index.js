@@ -4,6 +4,7 @@
 
 // Dependencies
 const http = require('http')
+const StringDecoder = require('string_decoder').StringDecoder
 
 // The server should respond to all requests with a string
 const server = http.createServer((req, res)=> {
@@ -24,14 +25,24 @@ const server = http.createServer((req, res)=> {
     // Get query params
     const params = url.searchParams
 
-    // Send the response
-    res.end('Hello World\n')
+    //Get payload, if any
+    const decoder = new StringDecoder('utf-8')
+    let buffer = ''
 
-    // Log the request path
-    console.log('Reques received on path:', trimmedPath)
-    console.log('Request method:', method)
-    console.log('Query params:', params)
-    console.log('Headers:', headers)
+    // This func calls the callback every time new payload data arrives
+    req.on('data', data => buffer += decoder.write(data))
+
+    // This func runs after the last bit of data from the payload arrives
+    req.on('end', ()=> {
+        buffer += decoder.end()
+
+        // Send the response
+        res.end('Hello World\n')
+    
+        // Log the request path
+        console.log('Reques received this payload:', buffer)
+
+    })
 
 })
 
