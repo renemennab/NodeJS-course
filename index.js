@@ -18,6 +18,9 @@ const server = http.createServer((req, res)=> {
     // Get the HTTP method
     const method = req.method.toLowerCase()
 
+    // Get the headers as an object
+    const headers = req.headers
+
     // Get query params
     const params = url.searchParams
 
@@ -28,6 +31,7 @@ const server = http.createServer((req, res)=> {
     console.log('Reques received on path:', trimmedPath)
     console.log('Request method:', method)
     console.log('Query params:', params)
+    console.log('Headers:', headers)
 
 })
 
