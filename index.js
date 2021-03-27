@@ -4,12 +4,40 @@
 
 // Dependencies
 const http = require('http')
+const https = require('https')
 const StringDecoder = require('string_decoder').StringDecoder
 const envConfigs = require('./config')
+const fs = require('fs')
 
-// The server should respond to all requests with a string
-const server = http.createServer((req, res) => {
+// Instatiate the http server
+const httpServer = http.createServer((req, res) => {
+    configureServer(req, res)
+})
 
+// start http server
+httpServer.listen(envConfigs.httpPort, () => {
+    console.log(`The server is listening on port ${envConfigs.httpPort} in ${envConfigs.id} mode`)
+})
+
+// Instatiate the https server
+const httpsServerOptions = {
+    key: fs.readFileSync('./https/key.pem'),
+    cert: fs.readFileSync('./https/cert.pem')
+}
+
+const httpsServer = https.createServer(httpsServerOptions, (req, res) => {
+    configureServer(req, res)
+})
+
+// start https server
+httpsServer.listen(envConfigs.httpsPort, () => {
+    console.log(`The server is listening on port ${envConfigs.httpsPort} in ${envConfigs.id} mode`)
+})
+
+/**
+ * This function unifies the logic from the servers so it can be used for both http and https
+ */
+function configureServer(req, res) {
     // Get parsed url obj
     const url = new URL(req.url, `http://${req.headers.host}`)
 
@@ -70,21 +98,15 @@ const server = http.createServer((req, res) => {
         })
 
     })
-
-})
-
-//Start the server, and have it listen selected environment port
-server.listen(envConfigs.port, () => {
-    console.log(`The server is listening on port ${envConfigs.port} in ${envConfigs.id} mode`)
-})
+}
 
 // Define the handlers 
 const handlers = {}
 
-// Sample handler
-handlers.sample = (data, callback) => {
+// Ping handler
+handlers.ping = (data, callback) => {
     //Callback a http status code, and a payload object
-    callback(406, { name: 'sample handler' })
+    callback(200)
 }
 
 // Not found handler
@@ -93,5 +115,5 @@ handlers.notFound = (data, callback) => {
 }
 
 const router = {
-    sample: handlers.sample
+    ping: handlers.ping
 }
