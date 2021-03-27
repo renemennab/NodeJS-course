@@ -8,15 +8,15 @@ const environmentOptions = {}
 
 // default environment
 environmentOptions.staging = { 
-    httpPort: 3000,
-    httpsPort: 3001,
-    id: 'staging'
+	httpPort: 3000,
+	httpsPort: 3001,
+	id: 'staging'
 }
 
 environmentOptions.production = {
-    httpPort: 5000,
-    httpsPort: 5001,
-    id: 'production'
+	httpPort: 5000,
+	httpsPort: 5001,
+	id: 'production'
 }
 
 /**
