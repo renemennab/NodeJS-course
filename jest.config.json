@@ -1,0 +1,6 @@
+{
+  "automock": false,
+  "transformIgnorePatterns": [
+    "/node_modules/"
+  ]
+}
