@@ -6,8 +6,10 @@
 const http = require('http')
 const https = require('https')
 const StringDecoder = require('string_decoder').StringDecoder
-const envConfigs = require('./config')
+const envConfigs = require('./lib/config')
 const fs = require('fs')
+const handlers = require('./lib/handlers')
+const helpers = require('./lib/helpers')
 
 // Instatiate the http server
 const httpServer = http.createServer((req, res) => {
@@ -74,7 +76,7 @@ function configureServer(req, res) {
 			params,
 			method,
 			headers,
-			payload: buffer
+			payload: helpers.parseJsonToObj(buffer)
 		}
 
 		// Call chosen handler to get the correct status code and payload
@@ -100,20 +102,9 @@ function configureServer(req, res) {
 	})
 }
 
-// Define the handlers 
-const handlers = {}
 
-// Ping handler
-handlers.ping = (data, callback) => {
-	//Callback a http status code, and a payload object
-	callback(200)
-}
-
-// Not found handler
-handlers.notFound = (data, callback) => {
-	callback(404)
-}
 
 const router = {
-	ping: handlers.ping
+	ping: handlers.ping,
+	users: handlers.users
 }
