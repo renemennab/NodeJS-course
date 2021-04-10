@@ -1,7 +1,6 @@
-const dataMethods = require('../lib/data')
+const DataCRUD = require('../lib/data')
 const Utils = require('./utils')
 
-const methods = new dataMethods()
 
 const testFileDir = 'testFiles'
 const testFileName = 'testFile'
@@ -12,7 +11,7 @@ describe('TEST CRUD METHODS', () => {
 		test('creates successfully if file doesn\'t exist', async () => {
 
 			let promise = Utils.createTestPromisse()
-			methods.create(testFileDir, testFileName, testFileContent, promise.resolvePromise)
+			DataCRUD.create(testFileDir, testFileName, testFileContent, promise.resolvePromise)
 			expect(await promise.testPromise).toStrictEqual(false)
 
 
@@ -20,7 +19,7 @@ describe('TEST CRUD METHODS', () => {
 		test('return message if it aleady exists', async () => {
 
 			let promise = Utils.createTestPromisse()
-			methods.create(testFileDir, testFileName, testFileContent, promise.resolvePromise)
+			DataCRUD.create(testFileDir, testFileName, testFileContent, promise.resolvePromise)
 			expect(await promise.testPromise).toStrictEqual('Could not create new file, it may already exist')
 
 		})
@@ -30,20 +29,20 @@ describe('TEST CRUD METHODS', () => {
 		test('file has right content', async () => {
 			let promise = Utils.createTestPromisse()
 
-			methods.read('testFiles', 'testFile', promise.resolvePromise)
+			DataCRUD.read('testFiles', 'testFile', promise.resolvePromise)
 			expect(await promise.testPromise).toStrictEqual({ data: JSON.stringify(testFileContent), 'err': null })
 		})
 		test('trying to read from a directory that doesn\t exist returns an error', async () => {
 			let promise = Utils.createTestPromisse()
 
-			methods.read('foo', 'testFile', promise.resolvePromise)
+			DataCRUD.read('foo', 'testFile', promise.resolvePromise)
 			const ret = await promise.testPromise
 			expect(ret.err).toBeTruthy()
 		})
 		test('trying to read file that doesn\t exist returns an error', async () => {
 			let promise = Utils.createTestPromisse()
 
-			methods.read('testFiles', 'foo', promise.resolvePromise)
+			DataCRUD.read('testFiles', 'foo', promise.resolvePromise)
 			const ret = await promise.testPromise
 			expect(ret.err).toBeTruthy()
 		})
@@ -54,18 +53,18 @@ describe('TEST CRUD METHODS', () => {
 		test('updates successfully if file exists', async () => {
 
 			let promise = Utils.createTestPromisse()
-			methods.update(testFileDir, testFileName, updatedContent, promise.resolvePromise)
+			DataCRUD.update(testFileDir, testFileName, updatedContent, promise.resolvePromise)
 			expect(await promise.testPromise).toStrictEqual(false)
             
 			promise = Utils.createTestPromisse()
-			methods.read('testFiles', 'testFile', promise.resolvePromise)
+			DataCRUD.read('testFiles', 'testFile', promise.resolvePromise)
 			expect(await promise.testPromise).toStrictEqual({ data: JSON.stringify(updatedContent), 'err': null })
 
 		})
 		test('return message if file doesn\t exist', async () => {
 
 			let promise = Utils.createTestPromisse()
-			methods.update('foo', testFileName, testFileContent, promise.resolvePromise)
+			DataCRUD.update('foo', testFileName, testFileContent, promise.resolvePromise)
 			expect(await promise.testPromise).toStrictEqual('Could not update file, it may not yet exist')
 
 		})
@@ -75,19 +74,19 @@ describe('TEST CRUD METHODS', () => {
 		test('deletes if it exists', async () => {
 
 			let promise = Utils.createTestPromisse()
-			methods.delete('testFiles', 'testFile', promise.resolvePromise)
+			DataCRUD.delete('testFiles', 'testFile', promise.resolvePromise)
 			expect(await promise.testPromise).toBe(false)
 		})
 		test('returns message if it doesn\t', async () => {
 
 			let promise = Utils.createTestPromisse()
-			methods.delete('testFiles', 'testFile', promise.resolvePromise)
+			DataCRUD.delete('testFiles', 'testFile', promise.resolvePromise)
 			expect(await promise.testPromise).toBe('error deleting file')
 		})
 
 	})
 	test('getDataPath returns the correct path', () => {
-		const path = methods.getDataPath(testFileDir, testFileName)
+		const path = DataCRUD.getDataPath(testFileDir, testFileName)
 		expect(path).toBe(__dirname.replace('tests', '') + '.data/testFiles/testFile.json')
 	})
 })
