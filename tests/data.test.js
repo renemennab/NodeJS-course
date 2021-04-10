@@ -1,4 +1,4 @@
-const DataCRUD = require('../lib/data')
+const DataCRUD = require('../lib/DataCRUD')
 const Utils = require('./utils')
 
 
