@@ -1,6 +1,7 @@
 {
-  "automock": false,
-  "transformIgnorePatterns": [
+    "automock": false,
+    "transformIgnorePatterns": [
     "/node_modules/"
-  ]
+  ],
+  "modulePathIgnorePatterns": ["./.data/testFiles"]
 }
