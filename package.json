@@ -1,16 +1,17 @@
 {
-    "name": "node-server-class",
-    "version": "0.0.1",
-    "main": "./index.ts",
-    "author": "Renê Boaventura",
-    "scripts": {
-      "test": "jest --runInBand",
-      "testw": "jest --watch --runInBand"
-    },
+  "name": "node-server-class",
+  "version": "0.0.1",
+  "main": "./index.ts",
+  "author": "Renê Boaventura",
+  "scripts": {
+    "test": "jest --runInBand",
+    "testw": "jest --watch --runInBand"
+  },
   "dependencies": {
     "jest": "^26.6.3"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.22",
     "eslint": "^7.23.0"
   }
 }
