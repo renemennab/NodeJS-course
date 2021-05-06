@@ -1,6 +1,13 @@
 const UserAPI = require('../lib/UserAPI')
 
 describe('USER API', () => {
+	describe('POST', () => {
+		test('post returns 400 if there is a problem with the required fields', () => {
+			const callback = jest.fn()
+			UserAPI.post({}, callback)
+			expect(callback).toBeCalledWith(400, {Error: 'Missing required fields'})
+		})
+	})
 	describe('VERIFY STRING', () => {
 		test('if param is not a string return false', () => {
 			let result = UserAPI.verifyString(24, 2)
